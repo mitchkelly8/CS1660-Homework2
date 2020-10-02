@@ -4,6 +4,8 @@ import csv
 # Create s3 Bucket (Access Keys Removed)
 s3 = boto3.resource('s3',aws_access_key_id='', aws_secret_access_key='')
 
+
+print("\n\n======= BUCKET CREATION =========")
 try:
     bucket = s3.create_bucket(
         ACL='public-read-write',
@@ -15,10 +17,11 @@ try:
 except:
     print("Bucket Already Created")
 
-
+"""
 # Print all s3 buckets
 for i in s3.buckets.all():
     print(i.name)
+"""
 
 
 # Upload a file to the s3 bucket
@@ -34,7 +37,6 @@ dyndb = boto3.resource(
     aws_access_key_id='',
     aws_secret_access_key=''
 )
-
 
 try:
     table = dyndb.create_table(
@@ -72,8 +74,8 @@ except:
 # Wait for the table to be created
 # table.meta.client.get_waiter('table_exists').wait(TableName='DataTable')
 
+print("\n\n======= TABLE ITEM COUNT =========")
 print(table.item_count)
-
 
 # Reading CSV File, uploading the blobs, and creating the table
 with open('/Users/MitchKelly/Documents/Pitt/Senior+/Fall/CS 1660/Assignments/Homework 2/data.csv', 'r') as csvfile:
@@ -92,7 +94,6 @@ with open('/Users/MitchKelly/Documents/Pitt/Senior+/Fall/CS 1660/Assignments/Hom
         except:
             print("Item may already be there or another failure")
 
-
 # Searching for an item
 response = table.get_item(
     Key={
@@ -101,4 +102,9 @@ response = table.get_item(
     }
 )
 item = response['Item']
+
+print("\n\n============= ITEM ===============")
 print(item)
+
+print("\n\n=========== Response =============")
+print(response)
